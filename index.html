@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Senin İçin</title>
+<meta property="og:title" content="Senin İçin">
+<meta property="og:description" content="Sana küçük bir sürprizim var 🌸">
+<meta property="og:image" content="https://kayragencer.github.io/senin-icin/onizleme.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:radial-gradient(ellipse at 50% 55%,#3b2433 0%,#1d1220 45%,#0c070d 100%);font-family:'Dancing Script',cursive;color:#fff;-webkit-tap-highlight-color:transparent}
+  #stage{position:fixed;inset:0;width:100%;height:100%;z-index:1}
+  .bokeh{position:fixed;border-radius:50%;filter:blur(6px);pointer-events:none;z-index:0;animation:float ease-in-out infinite alternate}
+  @keyframes float{to{transform:translateY(-30px)}}
+  #intro{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;z-index:5;transition:opacity 1s}
+  #intro.hide{opacity:0;pointer-events:none}
+  #intro p{font-size:30px;margin:0;opacity:.9}
+  #btn{font-family:inherit;font-size:26px;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.4);border-radius:40px;padding:12px 34px;cursor:pointer;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,220,230,.35)}50%{box-shadow:0 0 0 14px rgba(255,220,230,0)}}
+  #msg{position:fixed;top:5%;left:0;right:0;text-align:center;font-size:clamp(34px,8vw,62px);opacity:0;transform:translateY(10px);transition:opacity 2s,transform 2s;text-shadow:0 0 18px rgba(255,210,220,.45);z-index:3;padding:0 16px}
+  #msg small{display:block;font-size:.5em;margin-top:6px;opacity:.85}
+  #msg.show{opacity:1;transform:none}
+  #bqwrap{opacity:0;transition:opacity 1.4s}
+  #bqwrap.on{opacity:1}
+  .petal{transform:scale(.12);opacity:0;transition:transform 1.8s cubic-bezier(.2,.8,.3,1),opacity .6s}
+  .pop{transform:scale(0);transition:transform 1s cubic-bezier(.2,.8,.3,1.15)}
+  .open .petal{transform:scale(1);opacity:1}
+  .open .pop{transform:scale(1)}
+  .fall{position:fixed;width:13px;height:17px;background:radial-gradient(circle at 30% 30%,#fff,#ece6da);border-radius:60% 0 60% 0;opacity:.9;pointer-events:none;z-index:4;animation:fall linear forwards}
+  @keyframes fall{to{transform:translate(var(--dx),var(--dy)) rotate(540deg);opacity:0}}
+</style>
+</head>
+<body>
+<svg id="stage"><defs>
+  <radialGradient id="pOut" cx="50%" cy="100%" r="100%">
+    <stop offset="0%" stop-color="#c9c7a6"/><stop offset="35%" stop-color="#ebe9da"/><stop offset="70%" stop-color="#fbfaf4"/><stop offset="100%" stop-color="#ffffff"/>
+  </radialGradient>
+  <radialGradient id="pMid" cx="50%" cy="100%" r="100%">
+    <stop offset="0%" stop-color="#b6b68c"/><stop offset="40%" stop-color="#e3e2cc"/><stop offset="100%" stop-color="#fdfcf6"/>
+  </radialGradient>
+  <radialGradient id="pIn" cx="50%" cy="100%" r="100%">
+    <stop offset="0%" stop-color="#a3a575"/><stop offset="50%" stop-color="#d9d9b9"/><stop offset="100%" stop-color="#f6f4e6"/>
+  </radialGradient>
+  <radialGradient id="shade"><stop offset="0%" stop-color="#3b3020" stop-opacity=".55"/><stop offset="100%" stop-color="#3b3020" stop-opacity="0"/></radialGradient>
+  <radialGradient id="drop"><stop offset="0%" stop-color="#000" stop-opacity=".45"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient>
+  <radialGradient id="core"><stop offset="0%" stop-color="#6d7148" stop-opacity=".8"/><stop offset="100%" stop-color="#6d7148" stop-opacity="0"/></radialGradient>
+  <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fbf5ec"/><stop offset="60%" stop-color="#eee3d4"/><stop offset="100%" stop-color="#d9c8b4"/></linearGradient>
+  <linearGradient id="tissue" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f2d3d6"/><stop offset="100%" stop-color="#d7a8b0"/></linearGradient>
+  <linearGradient id="flapL" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#d8c6b1"/><stop offset="55%" stop-color="#f7efe4"/><stop offset="100%" stop-color="#e9dccb"/></linearGradient>
+  <linearGradient id="flapR" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#fbf6ee"/><stop offset="60%" stop-color="#eadfcf"/><stop offset="100%" stop-color="#cdb9a2"/></linearGradient>
+  <linearGradient id="satin" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e9b9c2"/><stop offset="45%" stop-color="#f7dde2"/><stop offset="100%" stop-color="#c68694"/></linearGradient>
+  <linearGradient id="leafG" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#244d2f"/><stop offset="60%" stop-color="#3f7449"/><stop offset="100%" stop-color="#5f9363"/></linearGradient>
+  <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity=".45"/></filter>
+</defs><g id="bqwrap"><g id="bq"></g></g></svg>
+
+<div id="intro"><p>Senin için bir şey hazırladım…</p><button id="btn">Dokun 🌸</button></div>
+<div id="msg">Bu çiçekler senin için</div>
+
+<script>
+const NS="http://www.w3.org/2000/svg";
+const svg=document.getElementById('stage'),bq=document.getElementById('bq');
+let W=innerWidth,H=innerHeight;svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+const R=Math.random;
+
+// arka plan ışıkları
+for(let i=0;i<22;i++){const d=document.createElement('div');d.className='bokeh';const z=20+R()*70;
+  d.style.cssText+=`width:${z}px;height:${z}px;left:${R()*100}vw;top:${R()*100}vh;background:rgba(${R()<.5?'255,200,215':'255,230,190'},${.05+R()*.12});animation-duration:${5+R()*6}s`;
+  document.body.appendChild(d)}
+
+const S=Math.min(W*.95/400,H*.86/530);
+bq.setAttribute('transform',`translate(${(W-400*S)/2},${H*.995-595*S}) scale(${S})`);
+const G={};['back','tissue','fill','front','roses','top','bow'].forEach(k=>G[k]=el('g',{},bq));
+
+// ---------- AMBALAJ ----------
+el('path',{d:"M18,205 Q14,140 52,108 Q70,62 122,64 Q150,30 200,40 Q250,30 278,64 Q330,62 348,108 Q386,140 382,205 L238,448 L162,448 Z",fill:'url(#paper)',filter:'url(#soft)'},G.back);
+el('path',{d:"M52,108 Q90,140 120,200 M348,108 Q310,140 280,200 M200,40 L200,150",stroke:'#d2c1aa','stroke-width':1.2,fill:'none',opacity:.6},G.back);
+el('path',{d:"M40,190 Q42,128 88,100 Q118,72 160,78 Q200,58 240,78 Q282,72 312,100 Q358,128 360,190 L232,440 L168,440 Z",fill:'url(#tissue)'},G.tissue);
+el('path',{d:"M88,100 Q120,130 140,190 M312,100 Q280,130 260,190",stroke:'#c58f99','stroke-width':1,fill:'none',opacity:.5},G.tissue);
+
+// ön ambalaj (saplar tamamen içinde)
+el('path',{d:"M70,300 Q130,285 200,300 Q270,285 330,300 L215,560 L185,560 Z",fill:'url(#tissue)'},G.front);
+el('path',{d:"M30,290 Q115,318 228,312 L210,566 Q196,572 186,564 Z",fill:'url(#flapL)',filter:'url(#soft)'},G.front);
+el('path',{d:"M370,286 Q290,330 172,322 L186,564 Q200,572 214,566 Z",fill:'url(#flapR)',filter:'url(#soft)'},G.front);
+el('path',{d:"M370,286 Q290,330 172,322",stroke:'#fffaf2','stroke-width':3,fill:'none',opacity:.9},G.front);
+el('path',{d:"M30,290 Q115,318 228,312",stroke:'#fffaf2','stroke-width':2,fill:'none',opacity:.6},G.front);
+el('path',{d:"M110,312 L196,555 M300,318 L204,555",stroke:'#c5b29b','stroke-width':1,fill:'none',opacity:.5},G.front);
+// alttan çıkan sap uçları
+const st=el('g',{},G.back);
+[-9,-5,-1,3,7,10].forEach((o,i)=>{el('path',{d:`M${200+o*.6},540 L${200+o*1.5},${590+(i%2)*4}`,stroke:i%2?'#3d6e46':'#4a7f52','stroke-width':4,'stroke-linecap':'butt'},st);
+  el('ellipse',{cx:200+o*1.5,cy:590+(i%2)*4,rx:2.2,ry:1,fill:'#a9c58a'},st)});
+G.back.insertBefore(st,G.back.firstChild);
+
+// kurdele
+(function(){const b=G.bow,f='url(#satin)',s='#b67784';
+  el('path',{d:"M200,448 C150,405 108,428 128,458 C142,478 182,462 200,448 Z",fill:f,stroke:s,'stroke-width':1.5},b);
+  el('path',{d:"M200,448 C250,405 292,428 272,458 C258,478 218,462 200,448 Z",fill:f,stroke:s,'stroke-width':1.5},b);
+  el('path',{d:"M150,425 C165,435 180,442 196,447 M250,425 C235,435 220,442 204,447",stroke:'#fff',opacity:.6,'stroke-width':2,fill:'none'},b);
+  el('path',{d:"M195,453 C182,492 168,520 150,548 L166,543 L170,560 C188,525 200,490 203,455 Z",fill:f,stroke:s,'stroke-width':1.5},b);
+  el('path',{d:"M205,453 C218,492 232,520 250,548 L234,543 L230,560 C212,525 200,490 197,455 Z",fill:f,stroke:s,'stroke-width':1.5},b);
+  el('ellipse',{cx:200,cy:450,rx:11,ry:9,fill:f,stroke:s,'stroke-width':1.5},b);
+  el('path',{d:"M30,370 Q200,395 370,370",stroke:'none',fill:'none'},b);
+})();
+
+// ---------- DOLGU (yaprak, okaliptüs, cipso) ----------
+function grp(x,y,rot,delay,parent){const w=el('g',{transform:`translate(${x},${y}) rotate(${rot})`},parent);const g=el('g',{class:'pop'},w);g.style.transitionDelay=delay+'s';return g}
+function leaf(g,x,y,r,s){const l=el('g',{transform:`translate(${x},${y}) rotate(${r}) scale(${s})`},g);
+  el('path',{d:"M0,0 C-15,-10 -16,-38 0,-54 C16,-38 15,-10 0,0 Z",fill:'url(#leafG)'},l);
+  el('path',{d:"M0,-2 L0,-50 M0,-14 L-8,-22 M0,-26 L-8,-34 M0,-14 L8,-22 M0,-26 L8,-34",stroke:'#1e3f27','stroke-width':.9,fill:'none',opacity:.7},l);
+  el('path',{d:"M-6,-30 C-6,-40 -3,-46 0,-50",stroke:'#fff','stroke-width':1.2,fill:'none',opacity:.18},l)}
+function leafSpray(x,y,rot,delay,p){const g=grp(x,y,rot,delay,p);el('path',{d:"M0,0 L0,-60",stroke:'#2f5e37','stroke-width':2},g);
+  leaf(g,0,-58,0,1);leaf(g,0,-30,-48,.8);leaf(g,0,-30,48,.8)}
+function euca(x,y,rot,len,delay,p){const g=grp(x,y,rot,delay,p);
+  el('path',{d:`M0,0 Q5,${-len/2} 0,${-len}`,stroke:'#647f6e','stroke-width':1.8,fill:'none'},g);
+  for(let t=.18;t<=1.01;t+=.15){const yy=-len*t,r=10.5-t*5;[-1,1].forEach(sd=>el('ellipse',{cx:sd*(r+1),cy:yy+sd*2,rx:r,ry:r*.85,fill:sd<0?'#a9c3b3':'#8daa99',stroke:'#7c9887','stroke-width':.6},g))}}
+function gyp(x,y,delay,p,n,Rr){const g=grp(x,y,0,delay,p);
+  for(let i=0;i<n;i++){const a=R()*Math.PI*2,r=Math.sqrt(R())*Rr;const px=Math.cos(a)*r,py=Math.sin(a)*r*.8;
+    el('line',{x1:0,y1:Rr*.9,x2:px,y2:py,stroke:'#7f9b84','stroke-width':.5},g);
+    el('circle',{cx:px,cy:py,r:1.5+R()*1.4,fill:'#fffdf7'},g)}}
+function blossom(x,y,sz,delay,p){const g=grp(x,y,R()*72,delay,p);
+  for(let i=0;i<5;i++)el('ellipse',{cx:0,cy:-4.6*sz,rx:3.3*sz,ry:4.8*sz,fill:'#f5d0d7',stroke:'#e2a5b2','stroke-width':.5,transform:`rotate(${i*72})`},g);
+  el('circle',{r:2*sz,fill:'#b9566f'},g)}
+
+// ---------- GÜL (hafif yandan görünüm) ----------
+const PETAL="M0,0 C-28,-4 -34,-36 -18,-50 C-10,-57 -4,-51 0,-55 C4,-51 10,-57 18,-50 C34,-36 28,-4 0,0 Z";
+const EDGE="M-21,-46 C-11,-56 -4,-50 0,-53 C4,-50 11,-56 21,-46";
+function rose(x,y,size,tilt,delay,p){
+  const outer=el('g',{transform:`translate(${x},${y}) rotate(${tilt}) scale(${size})`},p);
+  el('ellipse',{cx:0,cy:10,rx:64,ry:56,fill:'url(#drop)'},outer);
+  const h=el('g',{transform:'scale(1,.84)'},outer);
+  const L=[{n:6,s:1,dy:0,f:'pOut'},{n:5,s:.86,dy:-3,f:'pOut'},{n:5,s:.72,dy:-6,f:'pMid'},{n:5,s:.58,dy:-9,f:'pMid'},{n:4,s:.45,dy:-11,f:'pIn'},{n:3,s:.33,dy:-13,f:'pIn'}];
+  const spin=R()*360;
+  L.forEach((l,li)=>{
+    const lay=el('g',{transform:`translate(0,${l.dy})`},h);
+    if(li>0)el('ellipse',{cx:0,cy:6,rx:56*l.s+6,ry:54*l.s+6,fill:'url(#shade)',opacity:.9},lay);
+    for(let i=0;i<l.n;i++){
+      const w=el('g',{transform:`rotate(${spin+li*33+i*360/l.n+(R()*14-7)}) scale(${l.s*(.93+R()*.14)})`},lay);
+      const g=el('g',{class:'petal'},w);
+      el('path',{d:PETAL,fill:`url(#${l.f})`,stroke:'#cfcbb2','stroke-width':.9},g);
+      el('path',{d:EDGE,fill:'none',stroke:'#fff','stroke-width':2.4,'stroke-linecap':'round',opacity:.95},g);
+      g.style.transitionDelay=(delay+li*.18+R()*.12)+'s';
+    }});
+  const c=el('g',{class:'petal',transform:'translate(0,-14)'},h);c.style.transitionDelay=(delay+1.1)+'s';
+  el('circle',{r:14,fill:'url(#core)'},c);
+  el('path',{d:"M-9,4 C-12,-7 -2,-13 5,-9 C11,-5 9,4 2,6 C-4,8 -6,2 -2,-2 C1,-4 4,-1 2,2",fill:'none',stroke:'#f4f2e2','stroke-width':2.2,'stroke-linecap':'round'},c);
+  el('path',{d:"M-9,4 C-12,-7 -2,-13 5,-9 C11,-5 9,4 2,6 C-4,8 -6,2 -2,-2",fill:'none',stroke:'#9fa078','stroke-width':.9,'stroke-linecap':'round',transform:'translate(.8,1.2)'},c);
+}
+
+const ROSES=[[150,122,.88],[250,122,.88],[200,98,.8],[95,178,.86],[200,168,.95],[305,178,.86],[147,222,.9],[253,222,.9],[88,258,.82],[200,268,.92],[312,258,.82]];
+
+function build(){
+  document.getElementById('bqwrap').classList.add('on');
+  // arka dolgu
+  [[60,170,-62],[340,170,62],[110,95,-30],[290,95,30],[40,245,-95],[360,245,95],[200,70,0]].forEach(([x,y,r],i)=>leafSpray(x+ (x-200)*-.25,y+30,r,.6+i*.08,G.fill));
+  [[95,170,-60,95],[305,170,60,95],[150,105,-25,90],[250,105,25,90],[78,240,-100,85],[322,240,100,85]].forEach(([x,y,r,l],i)=>euca(x,y,r,l,.9+i*.1,G.fill));
+  [[50,150],[350,150],[110,65],[290,65],[200,48],[30,225],[370,225],[155,80],[245,80]].forEach(([x,y],i)=>gyp(x,y,1.2+i*.08,G.fill,22,20));
+  // güller arkadan öne
+  [...ROSES].sort((a,b)=>a[1]-b[1]).forEach(([x,y,s],i)=>rose(x,y,s,R()*24-12,.8+i*.16,G.roses));
+  // güllerin arasına küçük pembe çiçekler
+  [[200,215],[122,200],[278,200],[175,140],[225,140],[145,272],[255,272]].forEach(([x,y],i)=>
+    [[0,0],[8,-6],[-7,-6]].forEach(([dx,dy],j)=>blossom(x+dx,y+dy,.85+R()*.25,3+i*.1+j*.05,G.top)));
+  // isim kartı
+  const tg=grp(214,458,-14,4.6,G.bow);
+  el('path',{d:"M0,0 Q10,22 22,40",stroke:'#b9a184','stroke-width':1.2,fill:'none'},tg);
+  const card=el('g',{transform:'translate(22,40) rotate(8)'},tg);
+  el('rect',{x:-30,y:0,width:62,height:36,rx:5,fill:'#fbf5ea',stroke:'#c9b49a','stroke-width':1.2,filter:'url(#soft)'},card);
+  el('circle',{cx:0,cy:6,r:2.2,fill:'#c9b49a'},card);
+  const t=el('text',{x:1,y:27,'text-anchor':'middle','font-family':"'Dancing Script',cursive",'font-size':17,fill:'#8c4f5e'},card);t.textContent='Kayra';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>bq.classList.add('open')));
+}
+
+function petal(x,y){const f=document.createElement('div');f.className='fall';
+  const sy=y??-20;f.style.left=(x??R()*W)+'px';f.style.top=sy+'px';
+  f.style.setProperty('--dx',(R()*200-100)+'px');f.style.setProperty('--dy',(H+40-sy)+'px');
+  f.style.animationDuration=(5+R()*5)+'s';document.body.appendChild(f);setTimeout(()=>f.remove(),11000)}
+
+let started=false;
+document.getElementById('btn').onclick=e=>{e.stopPropagation();if(started)return;started=true;
+  document.getElementById('intro').classList.add('hide');build();
+  setTimeout(()=>document.getElementById('msg').classList.add('show'),4200);
+  setTimeout(()=>setInterval(()=>petal(),650),4000);
+};
+document.addEventListener('click',e=>{if(!started)return;for(let i=0;i<10;i++)petal(e.clientX+(R()*40-20),e.clientY)});
+</script>
+</body>
+</html>
